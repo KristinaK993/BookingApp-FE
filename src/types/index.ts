@@ -51,6 +51,9 @@ export interface Booking {
   customer?: Customer;
   employee?: Employee;
   services?: Service[];
+
+   customerName?: string;
+  employeeName?: string;
 }
 
 export interface DashboardSummary {

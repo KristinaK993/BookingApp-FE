@@ -1,4 +1,5 @@
-import { NavLink } from 'react-router-dom';
+import React from "react";
+import { NavLink } from "react-router-dom";
 import { 
   LayoutDashboard, 
   Calendar, 
@@ -9,6 +10,8 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
+import { useAuth } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const navigation = [
   { name: 'Dashboard', href: '/', icon: LayoutDashboard },
@@ -19,6 +22,13 @@ const navigation = [
 
 export function Sidebar() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { isAuthenticated, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
 
   return (
     <>
@@ -64,33 +74,51 @@ export function Sidebar() {
             </button>
           </div>
 
-          {/* Navigation */}
-          <nav className="flex-1 px-4 py-6 space-y-1">
-            {navigation.map((item) => (
-              <NavLink
-                key={item.name}
-                to={item.href}
-                onClick={() => setMobileOpen(false)}
-                className={({ isActive }) =>
-                  cn(
-                    "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
-                    isActive
-                      ? "bg-sidebar-accent text-sidebar-primary"
-                      : "text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-foreground"
-                  )
-                }
-              >
-                <item.icon className="h-5 w-5" />
-                {item.name}
-              </NavLink>
-            ))}
-          </nav>
+      <nav className="flex-1 px-4 py-6 space-y-1">
+  {navigation.map((item) => (
+    <NavLink
+      key={item.name}
+      to={item.href}
+      onClick={() => setMobileOpen(false)}
+      className={({ isActive }) =>
+        cn(
+          "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
+          isActive
+            ? "bg-sidebar-accent text-sidebar-foreground"
+            : "text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-foreground"
+        )
+      }
+    >
+      <item.icon className="h-5 w-5" />
+      {item.name}
+    </NavLink>
+  ))}
+</nav>
+
+
 
           {/* Footer */}
           <div className="p-4 border-t border-sidebar-border">
             <div className="px-3 py-2 text-xs text-sidebar-foreground/50">
               © 2024 BookingBase
             </div>
+          </div>
+          <div className="mt-4 px-4">
+            {isAuthenticated ? (
+              <button
+                onClick={handleLogout}
+                className="w-full bg-red-600 text-white py-2 rounded font-semibold hover:bg-red-700 transition"
+              >
+                Logga ut
+              </button>
+            ) : (
+              <button
+                onClick={() => navigate("/login")}
+                className="w-full bg-blue-600 text-white py-2 rounded font-semibold hover:bg-blue-700 transition"
+              >
+                Logga in
+              </button>
+            )}
           </div>
         </div>
       </aside>

@@ -1,52 +1,47 @@
-// API Configuration
-export const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+export const DEFAULT_COMPANY_ID = 1;
 
-// Default company ID for demo purposes
-export const DEFAULT_COMPANY_ID = '1';
+const API_URL = import.meta.env.VITE_API_URL ?? "https://localhost:7263/api";
 
-// Generic fetch wrapper with error handling
-export async function apiFetch<T>(
-  endpoint: string,
-  options: RequestInit = {}
-): Promise<T> {
-  const url = `${API_BASE_URL}${endpoint}`;
-  
-  const defaultHeaders: HeadersInit = {
-    'Content-Type': 'application/json',
-  };
-
-  const response = await fetch(url, {
-    ...options,
-    headers: {
-      ...defaultHeaders,
-      ...options.headers,
-    },
-  });
-
-  if (!response.ok) {
-    const errorMessage = await response.text().catch(() => 'Unknown error');
-    throw new Error(`API Error (${response.status}): ${errorMessage}`);
-  }
-
-  // Handle empty responses
-  const text = await response.text();
-  if (!text) {
-    return {} as T;
-  }
-
-  return JSON.parse(text) as T;
-}
-
-// Build query string from params object
-export function buildQueryString(params: Record<string, string | number | boolean | undefined>): string {
+// Ny helper – bygger ?from=...&to=... osv
+export function buildQueryString(params: Record<string, any>): string {
   const searchParams = new URLSearchParams();
-  
+
   Object.entries(params).forEach(([key, value]) => {
-    if (value !== undefined && value !== '') {
+    if (value === undefined || value === null || value === "") return;
+
+    if (Array.isArray(value)) {
+      value.forEach((v) => searchParams.append(key, String(v)));
+    } else {
       searchParams.append(key, String(value));
     }
   });
 
-  const queryString = searchParams.toString();
-  return queryString ? `?${queryString}` : '';
+  const qs = searchParams.toString();
+  return qs ? `?${qs}` : "";
+}
+
+export async function apiFetch<T>(
+  path: string,
+  options: RequestInit = {}
+): Promise<T> {
+  const response = await fetch(`${API_URL}${path}`, {
+    headers: {
+      "Content-Type": "application/json",
+      ...(options.headers ?? {}),
+    },
+    ...options,
+  });
+
+  if (!response.ok) {
+    const text = await response.text();
+    console.error("API error", response.status, text);
+    throw new Error(`API error ${response.status}: ${text}`);
+  }
+
+  if (response.status === 204) {
+    // @ts-ignore
+    return undefined;
+  }
+
+  return (await response.json()) as T;
 }

@@ -2,11 +2,11 @@ import { cn } from '@/lib/utils';
 import type { BookingStatus } from '@/types';
 
 interface StatusBadgeProps {
-  status: BookingStatus;
+  status?: BookingStatus | string;   // status kan vara undefined
   className?: string;
 }
 
-const statusConfig: Record<BookingStatus, { label: string; className: string }> = {
+const statusConfig: Record<string, { label: string; className: string }> = {
   Booked: {
     label: 'Bokad',
     className: 'bg-primary/10 text-primary border-primary/20',
@@ -21,8 +21,12 @@ const statusConfig: Record<BookingStatus, { label: string; className: string }> 
   },
 };
 
+// fallback om status är undefined eller okänd
+const DEFAULT_STATUS = statusConfig['Booked'];
+
 export function StatusBadge({ status, className }: StatusBadgeProps) {
-  const config = statusConfig[status];
+ 
+  const config = statusConfig[status ?? ''] ?? DEFAULT_STATUS;
 
   return (
     <span
