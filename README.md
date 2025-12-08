@@ -1,73 +1,141 @@
-# Welcome to your Lovable project
+# 📘 BookingApp-FE  
+*A modern booking management frontend built with React, TypeScript, and Vite.*
 
-## Project info
+BookingApp-FE is a responsive and user-friendly frontend application for managing **bookings, customers, employees, and services**.  
+It follows clean architecture principles, strong type safety, and a scalable project structure.
 
-**URL**: https://lovable.dev/projects/31211312-e788-4a46-af84-0995f764b037
+This repository contains the full **client-side application** that communicates with a **.NET backend API**.
 
-## How can I edit this code?
+---
 
-There are several ways of editing your application.
+## 🚀 Features
 
-**Use Lovable**
+### 📅 **Booking Management**
+- View all bookings  
+- View booking details  
+- Create new bookings  
+- Update existing bookings  
+- Cancel bookings / update status  
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/31211312-e788-4a46-af84-0995f764b037) and start prompting.
+### 🔎 **Advanced Filtering**
+- Filter by date range  
+- Filter by booking status  
+- Filter by employee  
 
-Changes made via Lovable will be committed automatically to this repo.
+### 👥 **Customer & Employee Integration**
+- Dynamic dropdowns populated from API  
+- Displays full names instead of ID values  
 
-**Use your preferred IDE**
+### ✔ **Form Validation**
+- Required field checks  
+- Inline error messages  
+- Backend validation support  
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### 🎨 **Modern UI/UX**
+- Built with **Shadcn UI** + **Tailwind CSS**  
+- Clean, minimalistic components  
+- Fully responsive layout  
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+### ⚡ **Data Handling & State**
+- **React Query** for caching, loading states, and auto-refetching  
+- Custom API service layer with typed requests  
+- Strong TypeScript typings across the app  
 
-Follow these steps:
+---
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+## 🛠 Tech Stack
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+| Category      | Technology |
+|---------------|------------|
+| **Framework** | React (TypeScript) |
+| **Styling**   | Tailwind CSS, Shadcn UI |
+| **State/Data** | React Query |
+| **Routing**   | React Router |
+| **Build Tool** | Vite |
+| **API Layer** | Fetch API + custom wrapper (`apiFetch`) |
 
-# Step 3: Install the necessary dependencies.
-npm i
+---
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+## 📦 Installation & Setup
+
+### 1️⃣ **Clone the repository**
+\`\`\`bash
+git clone https://github.com/KristinaK993/BookingApp-FE.git
+cd BookingApp-FE
+\`\`\`
+
+### 2️⃣ **Install dependencies**
+\`\`\`bash
+npm install
+\`\`\`
+
+### 3️⃣ **Create a .env file**
+\`\`\`env
+VITE_API_URL=https://localhost:7263/api
+\`\`\`
+
+### 4️⃣ **Start the development server**
+\`\`\`bash
 npm run dev
+\`\`\`
+
+**App will be available at:**  
+👉 http://localhost:8080
+
+---
+
+## 🔌 Backend Integration
+
+The frontend communicates with a .NET API that exposes endpoints for:
+
+| Resource | Example Endpoint |
+|---------|------------------|
+| **Bookings** | `GET /bookings?companyId=1` |
+| **Customers** | `GET /customers?companyId=1` |
+| **Employees** | `GET /employees?companyId=1` |
+| **Services** | `GET /services?companyId=1` |
+
+All data fetching and caching is handled through **React Query**.
+
+---
+
+## 📁 Project Structure
+
+```
+src/
+├─ api/ # API services (bookings, customers, employees, services)
+├─ components/ # Shared components + layout
+├─ components/ui/ # Shadcn UI components
+├─ context/ # Auth and global state
+├─ pages/ # App pages (Bookings, BookingDetail, Login, etc.)
+├─ types/ # TypeScript models and interfaces
+├─ App.tsx # Routing configuration
+└─ main.tsx # Application entrypoint
 ```
 
-**Edit a file directly in GitHub**
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
 
-**Use GitHub Codespaces**
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
 
-## What technologies are used for this project?
+Built to be:  
+✔ **Scalable**  
+✔ **Easy to understand**
 
-This project is built with:
+---
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## 🔮 Future Improvements
+Potential enhancements for future versions:
 
-## How can I deploy this project?
+- **Role-based authentication**  
+- **Calendar-based booking overview**  
+- **Email or push notifications**  
+- **Unit tests for UI and services**  
+- **Dark mode support**
+---
 
-Simply open [Lovable](https://lovable.dev/projects/31211312-e788-4a46-af84-0995f764b037) and click on Share -> Publish.
 
-## Can I connect a custom domain to my Lovable project?
 
-Yes, you can!
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+**👩‍💻 Author:**
+Kristina K
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
