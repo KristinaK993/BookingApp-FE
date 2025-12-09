@@ -27,7 +27,7 @@ export interface Employee {
 }
 
 export interface Customer {
-  id: string;
+  id: number;
   companyId: string;
   firstName: string;
   lastName: string;

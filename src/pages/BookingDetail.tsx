@@ -1,45 +1,21 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import {
-  useQuery,
-  useMutation,
-  useQueryClient,
-} from "@tanstack/react-query";
+import {useQuery,useMutation,useQueryClient,} from "@tanstack/react-query";
 import { ArrowLeft, Save, Trash2 } from "lucide-react";
-
-import {
-  getBooking,
-  createBooking,
-  updateBooking,
-  deleteBooking,
-} from "@/api/bookings";
+import {getBooking,createBooking,updateBooking,deleteBooking,} from "@/api/bookings";
 import { getCustomers } from "@/api/customers";
 import { getActiveEmployees } from "@/api/employees";
 import { getServices } from "@/api/services";
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import {Select,SelectContent,SelectItem,SelectTrigger,SelectValue,} from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { PageLoader } from "@/components/ui/LoadingSpinner";
 import { ErrorMessage } from "@/components/ui/ErrorMessage";
 import { toast } from "@/hooks/use-toast";
-
-import type {
-  BookingFormData,
-  BookingStatus,
-  Customer,
-  Service,
-  Employee,
-} from "@/types";
+import type {BookingFormData,BookingStatus,Customer,Service,Employee,} from "@/types";
 
 interface FormErrors {
   customerId?: string;
@@ -204,19 +180,30 @@ console.log("employees:", employees);
   // =====================
   // VALIDERING
   // =====================
-  const validate = (): boolean => {
-    const newErrors: FormErrors = {};
 
-    if (!formData.customerId) newErrors.customerId = "Välj en kund";
-    if (!formData.employeeId) newErrors.employeeId = "Välj personal";
-    if (formData.serviceIds.length === 0)
-      newErrors.serviceIds = "Välj minst en tjänst";
-    if (!formData.startTime)
-      newErrors.startTime = "Ange datum och tid";
+const validate = (): boolean => {
+  const newErrors: FormErrors = {};
 
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
+  if (!formData.customerId) newErrors.customerId = "Välj en kund";
+  if (!formData.employeeId) newErrors.employeeId = "Välj personal";
+  if (formData.serviceIds.length === 0)
+    newErrors.serviceIds = "Välj minst en tjänst";
+
+  if (!formData.startTime) {
+    newErrors.startTime = "Ange datum och tid";
+  } else {
+    const start = new Date(formData.startTime);
+    const now = new Date();
+
+    if (start < now) {
+      newErrors.startTime =
+        "Du kan inte boka ett datum/tid som redan har passerat";
+    }
+  }
+
+  setErrors(newErrors);
+  return Object.keys(newErrors).length === 0;
+};
 
   // =====================
   // HANDLERS

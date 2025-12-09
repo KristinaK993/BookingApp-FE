@@ -1,39 +1,61 @@
-// src/api/customers.ts
 import { apiFetch, buildQueryString, DEFAULT_COMPANY_ID } from "./config";
-import type { CustomerFormData } from "@/types";
+import type { Customer, CustomerFormData } from "@/types";
 
-// Lista kunder med pagination
-export async function getCustomers(page: number, pageSize: number) {
-  const params = {
+// ===========================
+// HÄMTA LISTA MED KUNDER
+// ===========================
+export async function getCustomers(
+  page = 1,
+  pageSize = 50
+): Promise<Customer[]> {
+  const query = buildQueryString({
     companyId: DEFAULT_COMPANY_ID,
     page,
     pageSize,
+  });
+
+  return apiFetch<Customer[]>(`/customers${query}`);
+}
+
+// ===========================
+// SKAPA KUND
+// ===========================
+export async function createCustomer(data: CustomerFormData) {
+  const body = {
+    ...data,
+    companyId: DEFAULT_COMPANY_ID,
   };
 
-  const qs = buildQueryString(params);
-  // Returnerar t.ex. { data: Customer[], totalPages, totalCount, page }
-  return apiFetch(`/customers${qs}`);
-}
-
-// Skapa kund
-export async function createCustomer(data: CustomerFormData) {
-  return apiFetch("/customers", {
+  return apiFetch<Customer>("/customers", {
     method: "POST",
-    body: JSON.stringify(data),
+    body: JSON.stringify(body),
   });
 }
 
-// Uppdatera kund
-export async function updateCustomer(id: string, data: Partial<CustomerFormData>) {
-  return apiFetch(`/customers/${id}`, {
+// ===========================
+// UPPDATERA KUND
+// ===========================
+// ===========================
+// UPPDATERA KUND
+// ===========================
+export async function updateCustomer(id: number, data: CustomerFormData) {
+  const body = {
+    id,                        
+    ...data,
+    companyId: DEFAULT_COMPANY_ID,
+  };
+
+  return apiFetch<Customer>(`/customers/${id}?companyId=${DEFAULT_COMPANY_ID}`, {
     method: "PUT",
-    body: JSON.stringify(data),
+    body: JSON.stringify(body),
   });
 }
 
-// Ta bort kund
-export async function deleteCustomer(id: string) {
-  return apiFetch<void>(`/customers/${id}`, {
-    method: "DELETE",
-  });
+// ===========================
+// RADERA KUND
+// ===========================
+export async function deleteCustomer(id: number) {
+  return apiFetch<void>(`/customers/${id}?companyId=${DEFAULT_COMPANY_ID}`, {
+  method: "DELETE",
+}); 
 }
