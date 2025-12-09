@@ -16,6 +16,8 @@ import { PageLoader } from "@/components/ui/LoadingSpinner";
 import { ErrorMessage } from "@/components/ui/ErrorMessage";
 import { toast } from "@/hooks/use-toast";
 import type {BookingFormData,BookingStatus,Customer,Service,Employee,} from "@/types";
+import { LogoutButton } from "@/components/LogoutButton";
+
 
 interface FormErrors {
   customerId?: string;

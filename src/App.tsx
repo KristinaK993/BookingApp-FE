@@ -3,6 +3,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
 import LoginPage from "./pages/Login";
 import RegisterPage from "./pages/Register";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -29,61 +30,79 @@ const App = () => (
       <Toaster />
       <Sonner />
       <Router>
-        <Layout>
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <ProtectedRoute>
+        <Routes>
+          {/* OFFENTLIGA SIDOR */}
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+
+          {/* SKYDDADE SIDOR MED LAYOUT */}
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <Layout>
                   <Index />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/bookings"
-              element={
-                <ProtectedRoute>
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/bookings"
+            element={
+              <ProtectedRoute>
+                <Layout>
                   <Bookings />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/bookings/:id"
-              element={
-                <ProtectedRoute>
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/bookings/:id"
+            element={
+              <ProtectedRoute>
+                <Layout>
                   <BookingDetail />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/customers"
-              element={
-                <ProtectedRoute>
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/customers"
+            element={
+              <ProtectedRoute>
+                <Layout>
                   <Customers />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/services"
-              element={
-                <ProtectedRoute>
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/services"
+            element={
+              <ProtectedRoute>
+                <Layout>
                   <Services />
-                </ProtectedRoute>
-              }
-            />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/register" element={<RegisterPage />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route
-              path="*"
-              element={
-                <ProtectedRoute>
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+
+          {/* CATCH-ALL */}
+          <Route
+            path="*"
+            element={
+              <ProtectedRoute>
+                <Layout>
                   <NotFound />
-                </ProtectedRoute>
-              }
-            />
-          </Routes>
-        </Layout>
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
       </Router>
     </TooltipProvider>
   </QueryClientProvider>
